@@ -25,9 +25,14 @@ class DetailVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
+        if currentPage != 0 {
+            self.locationsArray[currentPage].getWeather {
+                self.updateUserInterface()
+            }
+        }
     }
+
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -40,6 +45,7 @@ class DetailVC: UIViewController {
         func updateUserInterface() {
             locationLabel.text = locationsArray[currentPage].name
             dateLabel.text = locationsArray[currentPage].coordinates
+            temperatureLabel.text = locationsArray[currentPage].currentTemperature
     
     }
     
@@ -50,8 +56,6 @@ extension DetailVC: CLLocationManagerDelegate {
     func getLocation() {
         locationManger = CLLocationManager()
         locationManger.delegate = self
-        let status = CLLocationManager.authorizationStatus()
-        handleLocationAuthorizationStatus(status: status)
     }
     
     func handleLocationAuthorizationStatus (status: CLAuthorizationStatus) {
@@ -77,7 +81,7 @@ extension DetailVC: CLLocationManagerDelegate {
         currentLocation = locations.last
         let currentLatitude = currentLocation.coordinate.latitude
         let currentLongitude = currentLocation.coordinate.longitude
-        let currentCoordinates = "\(currentLatitude), \(currentLongitude)"
+        let currentCoordinates = "\(currentLatitude),\(currentLongitude)"
         dateLabel.text = currentCoordinates
         geoCoder.reverseGeocodeLocation(currentLocation, completionHandler: {placemarks, error in
             if placemarks != nil {
@@ -89,8 +93,9 @@ extension DetailVC: CLLocationManagerDelegate {
             }
             self.locationsArray[0].name = place
             self.locationsArray[0].coordinates = currentCoordinates
-            self.locationsArray[0].getWeather()
-            self.updateUserInterface()
+            self.locationsArray[0].getWeather {
+                self.updateUserInterface()
+            }
         })
     }
     

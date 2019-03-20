@@ -14,6 +14,8 @@ class WeatherLocation {
     var name = ""
     var coordinates = ""
     var currentTemperature = "--"
+    var currentDescription = ""
+    var currentIcon = ""
     
     func getWeather(completed: @escaping () -> ()) {
         let weatherURL = urlBase + urlAPIKey + coordinates
@@ -21,6 +23,16 @@ class WeatherLocation {
             switch response.result {
             case .success(let value):
                 let json = JSON(value)
+                if let description = json["daily"]["summary"].string {
+                    self.currentDescription = description
+                } else {
+                    print("Error")
+                }
+                if let icon = json["currently"]["icon"].string {
+                    self.currentIcon = icon
+                } else {
+                    print("Error")
+                }
                 if let temperature = json["currently"]["temperature"].double {
                     print("**** TEmp inside get weather")
                     let roundedTemp = String(format: "%3.f", temperature)

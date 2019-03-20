@@ -24,6 +24,7 @@ class DetailVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         locationLabel.text = locationsArray[currentPage].name
+        dateLabel.text = locationsArray[currentPage].coordinates
 
     }
     

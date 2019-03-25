@@ -1,5 +1,5 @@
 //
-//  WeatherLocatio.swift
+//  WeatherDetail.swift
 //  WeatherGift
 //
 //  Created by Jason Tee on 3/20/19.
@@ -10,7 +10,7 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
-class WeatherLocation {
+class WeatherDetail: WeatherLocation {
     
     struct HourlyForecast {
         var hourlyTime: Double
@@ -28,8 +28,6 @@ class WeatherLocation {
         var dailyIcon: String
     }
     
-    var name = ""
-    var coordinates = ""
     var currentTemperature = "--"
     var currentDescription = ""
     var currentIcon = ""
